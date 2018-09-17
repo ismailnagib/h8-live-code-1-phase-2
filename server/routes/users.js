@@ -1,8 +1,13 @@
-const express = require('express')
-const router = express.Router()
-const { register, login } = require('../controllers/usersController')
+var express = require('express');
+var router = express.Router();
+var UserController = require('../controllers/user')
+var middleware = require('../middlewares/authentication.js')
 
-router.post('/register', register)
-router.post('/login', login)
+/* GET users listing. */
+router.get('/', UserController.all);
 
-module.exports = router
+router.post('/register', UserController.register)
+router.post('/login', UserController.login)
+router.post('/checklogin', middleware.isLogin, (req, res) => {res.status(200).json({isLogin: true})})
+
+module.exports = router;
